@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BogoFITNESS - Panel de Administración</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Iconos opcionales desde FontAwesome o RemixIcon si deseas agregarlos luego -->
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- 1. BARRA LATERAL (SIDEBAR) -->
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>Bogo<span>FITNESS</span></h2>
+        <small>Admin Panel</small>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active"><a href="#">📊 Inicio</a></li>
+          <li><a href="#">🏋️‍♂️ Miembros</a></li>
+          <li><a href="#">💳 Pagos</a></li>
+          <li><a href="#">📈 Reportes</a></li>
+          <li><a href="#">⚙️ Configuración</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- 2. CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+      
+      <!-- HEADER -->
+      <header class="top-header">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Buscar miembro por nombre o ID...">
+        </div>
+        <div class="user-profile">
+          <span class="user-name">Administrador</span>
+          <div class="avatar">A</div>
+        </div>
+      </header>
+
+      <!-- ÁREA DE DASHBOARD -->
+      <section class="dashboard-view">
+        
+        <!-- TARJETAS DE KPIS -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <h3>Miembros Activos</h3>
+            <p class="kpi-value" id="activeMembersCard">0</p>
+            <span class="kpi-change positive">+12% este mes</span>
+          </div>
+
+          <div class="kpi-card">
+            <h3>Ingresos Mensuales</h3>
+            <p class="kpi-value" id="monthlyIncomeCard">$0 COP</p>
+            <span class="kpi-change positive">+8% vs mes anterior</span>
+          </div>
+
+          <div class="kpi-card">
+            <h3>Aforo Actual</h3>
+            <p class="kpi-value" id="capacityCard">0 / 80</p>
+            <span class="kpi-change neutral" id="capacityPercentage">0% de capacidad</span>
+          </div>
+
+          <div class="kpi-card">
+            <h3>Por Vencer (7 días)</h3>
+            <p class="kpi-value" id="pendingMembersCard">0</p>
+            <span class="kpi-change negative">Atención requerida</span>
+          </div>
+        </div>
+
+        <!-- TABLA DE MIEMBROS -->
+        <div class="data-section">
+          <div class="section-header">
+            <h2>Gestión de Miembros</h2>
+            <button class="btn-primary" id="openModalBtn">+ Nuevo Miembro</button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Plan</th>
+                  <th>Estado</th>
+                  <th>Último Pago</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="membersTable">
+                <tr>
+                <td>#BF-101</td>
+                <td>Carlos Mendoza</td>
+                <td>Plan VIP</td>
+                <td><span class="badge active">Activo</span></td>
+                <td>01/09/2026</td>
+                <td><button class="btn-action">Ver</button></td>
+            </tr>
+            <tr>
+                <td>#BF-102</td>
+                <td>Mariana Gómez</td>
+                <td>Plan Básico</td>
+                <td><span class="badge pending">Por Vencer</span></td>
+                <td>28/08/2026</td>
+                <td><button class="btn-action">Ver</button></td>
+            </tr>
+            <tr>
+                <td>#BF-103</td>
+                <td>Andrés Rocha</td>
+                <td>Plan VIP</td>
+                <td><span class="badge active">Activo</span></td>
+                <td>02/09/2026</td>
+                <td><button class="btn-action">Ver</button></td>
+            </tr>
+            <tr>
+                <td>#BF-104</td>
+                <td>Laura Jiménez</td>
+                <td>Plan Básico</td>
+                <td><span class="badge active">Activo</span></td>
+                <td>03/09/2026</td>
+                <td><button class="btn-action">Ver</button></td>
+            </tr>
+            <tr>
+                <td>#BF-105</td>
+                <td>Felipe Torres</td>
+                <td>Plan Intermedio</td>
+                <td><span class="badge pending">Por Vencer</span></td>
+                <td>25/08/2026</td>
+                <td><button class="btn-action">Ver</button></td>
+            </tr>
+            <tr>
+                <td>#BF-104</td>
+                <td>Johan Cuitiva</td>
+                <td>Plan Básico</td>
+                <td><span class="badge active">Activo</span></td>
+                <td>03/09/2026</td>
+                <td><button class="btn-action">Ver</button></td>
+            </tr>
+            </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL DE REGISTRO -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Registrar Nuevo Miembro</h3>
+      <button class="close-btn" id="closeModal">&times;</button>
+    </div>
+    <form id="memberForm">
+      <div class="form-group">
+        <label for="memberName">Nombre Completo</label>
+        <input type="text" id="memberName" required placeholder="Ej. Ana Martínez">
+      </div>
+      <div class="form-group">
+        <label for="memberPlan">Plan</label>
+        <select id="memberPlan">
+          <option value="Plan Básico">Plan Básico</option>
+          <option value="Plan Intermedio">Plan Intermedio</option>
+          <option value="Plan VIP">Plan VIP</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="memberStatus">Estado Inicial</label>
+        <select id="memberStatus">
+          <option value="active">Activo</option>
+          <option value="pending">Por Vencer</option>
+          <option value="inactive">Inactivo</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary btn-full">Guardar Miembro</button>
+    </form>
+  </div>
+</div>
+
+  <!-- Modal Detalle Miembro -->
+<div class="modal" id="viewMemberModal">
+  <div class="modal-content">
+    <h2>Detalles del Miembro</h2>
+    <div class="member-details-body">
+      <p><strong>ID:</strong> <span id="detailId"></span></p>
+      <p><strong>Nombre:</strong> <span id="detailName"></span></p>
+      <p><strong>Plan:</strong> <span id="detailPlan"></span></p>
+      <p><strong>Estado:</strong> <span id="detailStatus"></span></p>
+      <p><strong>Último Pago:</strong> <span id="detailPayment"></span></p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="closeDetailModal">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
