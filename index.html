@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BogoFITNESS - Panel de Administración</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Iconos opcionales desde FontAwesome o RemixIcon si deseas agregarlos luego -->
 </head>
 <body>
 
@@ -14,17 +13,17 @@
     <!-- 1. BARRA LATERAL (SIDEBAR) -->
     <aside class="sidebar">
       <div class="brand">
-        <h2>Bogo<span>FITNESS</span></h2>
-        <small>Admin Panel</small>
+        <h2 id="brandName">Bogo<span>FITNESS</span></h2>
+        <small data-i18n="brand.sub">Panel Admin</small>
       </div>
 
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" id="sidebarNav">
         <ul>
-          <li class="active"><a href="#">📊 Inicio</a></li>
-          <li><a href="#">🏋️‍♂️ Miembros</a></li>
-          <li><a href="#">💳 Pagos</a></li>
-          <li><a href="#">📈 Reportes</a></li>
-          <li><a href="#">⚙️ Configuración</a></li>
+          <li class="active" data-view="home"><a href="#" data-i18n="nav.home">📊 Inicio</a></li>
+          <li data-view="members"><a href="#" data-i18n="nav.members">🏋️‍♂️ Miembros</a></li>
+          <li data-view="payments"><a href="#" data-i18n="nav.payments">💳 Pagos</a></li>
+          <li data-view="reports"><a href="#" data-i18n="nav.reports">📈 Reportes</a></li>
+          <li data-view="settings"><a href="#" data-i18n="nav.settings">⚙️ Configuración</a></li>
         </ul>
       </nav>
     </aside>
@@ -35,114 +34,190 @@
       <!-- HEADER -->
       <header class="top-header">
         <div class="search-bar">
-          <input type="text" id="searchInput" placeholder="Buscar miembro por nombre o ID...">
+          <input type="text" id="searchInput" data-i18n-placeholder="search.placeholder" placeholder="Buscar miembro por nombre o ID...">
         </div>
-        <div class="user-profile">
-          <span class="user-name">Administrador</span>
-          <div class="avatar">A</div>
+        <div class="header-actions">
+          <button class="lang-toggle" id="langToggle" type="button" aria-label="Change language / Cambiar idioma">EN</button>
+          <div class="user-profile">
+            <span class="user-name" data-i18n="user.name">Administrador</span>
+            <div class="avatar">A</div>
+          </div>
         </div>
       </header>
 
       <!-- ÁREA DE DASHBOARD -->
       <section class="dashboard-view">
-        
-        <!-- TARJETAS DE KPIS -->
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <h3>Miembros Activos</h3>
-            <p class="kpi-value" id="activeMembersCard">0</p>
-            <span class="kpi-change positive">+12% este mes</span>
+
+        <!-- VISTA: INICIO -->
+        <div class="view-panel active" data-panel="home">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <h3 data-i18n="kpi.active.title">Miembros Activos</h3>
+              <p class="kpi-value" id="activeMembersCard">0</p>
+              <span class="kpi-change positive" data-i18n="kpi.active.change">+12% este mes</span>
+            </div>
+            <div class="kpi-card">
+              <h3 data-i18n="kpi.income.title">Ingresos Mensuales</h3>
+              <p class="kpi-value" id="monthlyIncomeCard">$0 COP</p>
+              <span class="kpi-change positive" data-i18n="kpi.income.change">+8% vs mes anterior</span>
+            </div>
+            <div class="kpi-card">
+              <h3 data-i18n="kpi.capacity.title">Aforo Actual</h3>
+              <p class="kpi-value" id="capacityCard">0 / 80</p>
+              <span class="kpi-change neutral" id="capacityPercentage">0%</span>
+            </div>
+            <div class="kpi-card">
+              <h3 data-i18n="kpi.expiring.title">Por Vencer (7 días)</h3>
+              <p class="kpi-value" id="pendingMembersCard">0</p>
+              <span class="kpi-change negative" data-i18n="kpi.expiring.change">Atención requerida</span>
+            </div>
           </div>
 
-          <div class="kpi-card">
-            <h3>Ingresos Mensuales</h3>
-            <p class="kpi-value" id="monthlyIncomeCard">$0 COP</p>
-            <span class="kpi-change positive">+8% vs mes anterior</span>
-          </div>
-
-          <div class="kpi-card">
-            <h3>Aforo Actual</h3>
-            <p class="kpi-value" id="capacityCard">0 / 80</p>
-            <span class="kpi-change neutral" id="capacityPercentage">0% de capacidad</span>
-          </div>
-
-          <div class="kpi-card">
-            <h3>Por Vencer (7 días)</h3>
-            <p class="kpi-value" id="pendingMembersCard">0</p>
-            <span class="kpi-change negative">Atención requerida</span>
+          <div class="data-section">
+            <div class="section-header">
+              <h2 data-i18n="home.recent.title">Miembros Recientes</h2>
+              <div class="section-actions">
+                <button class="btn-secondary" type="button" data-goto="members" data-i18n="home.viewAll">Ver todos</button>
+                <button class="btn-primary js-open-modal" type="button" data-i18n="section.add">+ Nuevo Miembro</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="table.id">ID</th>
+                    <th data-i18n="table.name">Nombre</th>
+                    <th data-i18n="table.plan">Plan</th>
+                    <th data-i18n="table.status">Estado</th>
+                    <th data-i18n="table.payment">Último Pago</th>
+                    <th data-i18n="table.actions">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="membersTable"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- TABLA DE MIEMBROS -->
-        <div class="data-section">
-          <div class="section-header">
-            <h2>Gestión de Miembros</h2>
-            <button class="btn-primary" id="openModalBtn">+ Nuevo Miembro</button>
+        <!-- VISTA: MIEMBROS -->
+        <div class="view-panel" data-panel="members">
+          <div class="data-section">
+            <div class="section-header">
+              <h2 data-i18n="members.title">Todos los Miembros</h2>
+              <button class="btn-primary js-open-modal" type="button" data-i18n="section.add">+ Nuevo Miembro</button>
+            </div>
+            <div class="filters">
+              <div class="form-group inline">
+                <label for="filterPlan" data-i18n="members.filterPlanLabel">Plan</label>
+                <select id="filterPlan">
+                  <option value="all" data-i18n="members.filterAllPlans">Todos los planes</option>
+                  <option value="basic" data-i18n="plan.basic">Plan Básico</option>
+                  <option value="intermediate" data-i18n="plan.intermediate">Plan Intermedio</option>
+                  <option value="vip" data-i18n="plan.vip">Plan VIP</option>
+                </select>
+              </div>
+              <div class="form-group inline">
+                <label for="filterStatus" data-i18n="members.filterStatusLabel">Estado</label>
+                <select id="filterStatus">
+                  <option value="all" data-i18n="members.filterAllStatus">Todos los estados</option>
+                  <option value="active" data-i18n="status.active">Activo</option>
+                  <option value="pending" data-i18n="status.pending">Por Vencer</option>
+                  <option value="inactive" data-i18n="status.inactive">Inactivo</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="table.id">ID</th>
+                    <th data-i18n="table.name">Nombre</th>
+                    <th data-i18n="table.plan">Plan</th>
+                    <th data-i18n="table.status">Estado</th>
+                    <th data-i18n="table.payment">Último Pago</th>
+                    <th data-i18n="table.actions">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="allMembersTable"></tbody>
+              </table>
+              <p class="empty-row hidden" id="membersEmpty" data-i18n="members.empty">No se encontraron miembros con esos filtros.</p>
+            </div>
           </div>
+        </div>
 
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Plan</th>
-                  <th>Estado</th>
-                  <th>Último Pago</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="membersTable">
-                <tr>
-                <td>#BF-101</td>
-                <td>Carlos Mendoza</td>
-                <td>Plan VIP</td>
-                <td><span class="badge active">Activo</span></td>
-                <td>01/09/2026</td>
-                <td><button class="btn-action">Ver</button></td>
-            </tr>
-            <tr>
-                <td>#BF-102</td>
-                <td>Mariana Gómez</td>
-                <td>Plan Básico</td>
-                <td><span class="badge pending">Por Vencer</span></td>
-                <td>28/08/2026</td>
-                <td><button class="btn-action">Ver</button></td>
-            </tr>
-            <tr>
-                <td>#BF-103</td>
-                <td>Andrés Rocha</td>
-                <td>Plan VIP</td>
-                <td><span class="badge active">Activo</span></td>
-                <td>02/09/2026</td>
-                <td><button class="btn-action">Ver</button></td>
-            </tr>
-            <tr>
-                <td>#BF-104</td>
-                <td>Laura Jiménez</td>
-                <td>Plan Básico</td>
-                <td><span class="badge active">Activo</span></td>
-                <td>03/09/2026</td>
-                <td><button class="btn-action">Ver</button></td>
-            </tr>
-            <tr>
-                <td>#BF-105</td>
-                <td>Felipe Torres</td>
-                <td>Plan Intermedio</td>
-                <td><span class="badge pending">Por Vencer</span></td>
-                <td>25/08/2026</td>
-                <td><button class="btn-action">Ver</button></td>
-            </tr>
-            <tr>
-                <td>#BF-104</td>
-                <td>Johan Cuitiva</td>
-                <td>Plan Básico</td>
-                <td><span class="badge active">Activo</span></td>
-                <td>03/09/2026</td>
-                <td><button class="btn-action">Ver</button></td>
-            </tr>
-            </tbody>
-            </table>
+        <!-- VISTA: PAGOS -->
+        <div class="view-panel" data-panel="payments">
+          <div class="data-section">
+            <div class="section-header">
+              <h2 data-i18n="payments.title">Historial de Pagos</h2>
+            </div>
+            <p class="muted" data-i18n="payments.subtitle">Montos calculados según el plan contratado.</p>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="table.id">ID</th>
+                    <th data-i18n="table.name">Nombre</th>
+                    <th data-i18n="table.plan">Plan</th>
+                    <th data-i18n="table.amount">Monto</th>
+                    <th data-i18n="table.payment">Último Pago</th>
+                    <th data-i18n="table.status">Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISTA: REPORTES -->
+        <div class="view-panel" data-panel="reports">
+          <div class="kpi-grid two">
+            <div class="kpi-card">
+              <h3 data-i18n="reports.totalMembers">Total Miembros</h3>
+              <p class="kpi-value" id="reportTotalMembers">0</p>
+            </div>
+            <div class="kpi-card">
+              <h3 data-i18n="reports.totalIncome">Ingreso Total Estimado</h3>
+              <p class="kpi-value" id="reportTotalIncome">$0</p>
+            </div>
+          </div>
+          <div class="reports-grid">
+            <div class="data-section">
+              <div class="section-header"><h2 data-i18n="reports.incomeByPlan">Ingresos por Plan</h2></div>
+              <div class="bars" id="chartPlans"></div>
+            </div>
+            <div class="data-section">
+              <div class="section-header"><h2 data-i18n="reports.membersByStatus">Miembros por Estado</h2></div>
+              <div class="bars" id="chartStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISTA: CONFIGURACIÓN -->
+        <div class="view-panel" data-panel="settings">
+          <div class="data-section settings-card">
+            <div class="section-header"><h2 data-i18n="settings.title">Configuración</h2></div>
+            <p class="muted" data-i18n="settings.hint">Estos valores se usan en aforo, moneda y cabecera.</p>
+            <form id="settingsForm">
+              <div class="form-group">
+                <label for="settingGymName" data-i18n="settings.gymName">Nombre del gimnasio</label>
+                <input type="text" id="settingGymName" maxlength="30" required>
+              </div>
+              <div class="form-group">
+                <label for="settingCapacity" data-i18n="settings.capacity">Capacidad máxima (aforo)</label>
+                <input type="number" id="settingCapacity" min="10" max="1000" required>
+              </div>
+              <div class="form-group">
+                <label for="settingRate" data-i18n="settings.rate">Tasa COP por 1 USD</label>
+                <input type="number" id="settingRate" min="1000" max="10000" step="50" required>
+              </div>
+              <div class="settings-actions">
+                <button type="submit" class="btn-primary" data-i18n="settings.save">Guardar Cambios</button>
+                <button type="button" class="btn-secondary" id="resetSettingsBtn" data-i18n="settings.reset">Restablecer</button>
+              </div>
+              <p class="saved-msg hidden" id="settingsSaved" data-i18n="settings.saved">✅ Cambios guardados</p>
+            </form>
           </div>
         </div>
 
@@ -153,54 +228,57 @@
   </div>
 
   <!-- MODAL DE REGISTRO -->
-<div class="modal-overlay" id="memberModal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3>Registrar Nuevo Miembro</h3>
-      <button class="close-btn" id="closeModal">&times;</button>
+  <div class="modal-overlay" id="memberModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 data-i18n="modal.register.title">Registrar Nuevo Miembro</h3>
+        <button class="close-btn" id="closeModal" type="button" aria-label="Cerrar">&times;</button>
+      </div>
+      <form id="memberForm">
+        <div class="form-group">
+          <label for="memberName" data-i18n="modal.name.label">Nombre Completo</label>
+          <input type="text" id="memberName" required data-i18n-placeholder="modal.name.placeholder" placeholder="Ej. Ana Martínez" maxlength="60">
+        </div>
+        <div class="form-group">
+          <label for="memberPlan" data-i18n="modal.plan.label">Plan</label>
+          <select id="memberPlan">
+            <option value="basic" data-i18n="plan.basic">Plan Básico</option>
+            <option value="intermediate" data-i18n="plan.intermediate">Plan Intermedio</option>
+            <option value="vip" data-i18n="plan.vip">Plan VIP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="memberStatus" data-i18n="modal.status.label">Estado Inicial</label>
+          <select id="memberStatus">
+            <option value="active" data-i18n="status.active">Activo</option>
+            <option value="pending" data-i18n="status.pending">Por Vencer</option>
+            <option value="inactive" data-i18n="status.inactive">Inactivo</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary btn-full" data-i18n="modal.save">Guardar Miembro</button>
+      </form>
     </div>
-    <form id="memberForm">
-      <div class="form-group">
-        <label for="memberName">Nombre Completo</label>
-        <input type="text" id="memberName" required placeholder="Ej. Ana Martínez">
-      </div>
-      <div class="form-group">
-        <label for="memberPlan">Plan</label>
-        <select id="memberPlan">
-          <option value="Plan Básico">Plan Básico</option>
-          <option value="Plan Intermedio">Plan Intermedio</option>
-          <option value="Plan VIP">Plan VIP</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="memberStatus">Estado Inicial</label>
-        <select id="memberStatus">
-          <option value="active">Activo</option>
-          <option value="pending">Por Vencer</option>
-          <option value="inactive">Inactivo</option>
-        </select>
-      </div>
-      <button type="submit" class="btn-primary btn-full">Guardar Miembro</button>
-    </form>
   </div>
-</div>
 
-  <!-- Modal Detalle Miembro -->
-<div class="modal" id="viewMemberModal">
-  <div class="modal-content">
-    <h2>Detalles del Miembro</h2>
-    <div class="member-details-body">
-      <p><strong>ID:</strong> <span id="detailId"></span></p>
-      <p><strong>Nombre:</strong> <span id="detailName"></span></p>
-      <p><strong>Plan:</strong> <span id="detailPlan"></span></p>
-      <p><strong>Estado:</strong> <span id="detailStatus"></span></p>
-      <p><strong>Último Pago:</strong> <span id="detailPayment"></span></p>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" id="closeDetailModal">Cerrar</button>
+  <!-- MODAL DETALLE MIEMBRO -->
+  <div class="modal-overlay" id="viewMemberModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 data-i18n="detail.title">Detalles del Miembro</h3>
+        <button class="close-btn" id="closeDetailModal" type="button" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="member-details-body">
+        <p><strong data-i18n="detail.id">ID:</strong> <span id="detailId"></span></p>
+        <p><strong data-i18n="detail.name">Nombre:</strong> <span id="detailName"></span></p>
+        <p><strong data-i18n="detail.plan">Plan:</strong> <span id="detailPlan"></span></p>
+        <p><strong data-i18n="detail.status">Estado:</strong> <span id="detailStatus"></span></p>
+        <p><strong data-i18n="detail.payment">Último Pago:</strong> <span id="detailPayment"></span></p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="closeDetailBtn" type="button" data-i18n="detail.close">Cerrar</button>
+      </div>
     </div>
   </div>
-</div>
 
   <script src="app.js"></script>
 
