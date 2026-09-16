@@ -69,6 +69,31 @@ body {
   color: #fff;
 }
 
+/* Botón hamburguesa: oculto en desktop */
+.menu-toggle {
+  display: none;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.menu-toggle:hover {
+  background-color: #334155;
+}
+
+/* Overlay del sidebar: oculto en desktop */
+.sidebar-overlay {
+  display: none;
+}
+
 /* 2. MAIN CONTENT */
 .main-content {
   display: flex;
@@ -495,20 +520,64 @@ th {
     grid-template-columns: 1fr;
   }
 
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* Drawer lateral desde la izquierda */
   .sidebar {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100dvh;
+    width: 270px;
+    z-index: 1001;
+    flex-direction: column;
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .sidebar.open {
+    transform: none;
   }
 
   .sidebar-nav ul {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(2, 6, 23, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  body.sidebar-locked {
+    overflow: hidden;
   }
 
   .top-header {
     flex-wrap: wrap;
     gap: 12px;
+  }
+
+  .menu-toggle {
+    order: 1;
+  }
+
+  .header-actions {
+    order: 2;
+    margin-left: auto;
   }
 
   .search-bar input {
@@ -517,6 +586,7 @@ th {
 
   .search-bar {
     flex: 1 1 100%;
+    order: 3;
   }
 
   .kpi-grid {

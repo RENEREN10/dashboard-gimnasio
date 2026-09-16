@@ -193,6 +193,27 @@ const isPaying = (m) => m.status === 'active' || m.status === 'pending';
 const countByStatus = (status) => members.filter((m) => m.status === status).length;
 const calcIncomeCOP = () => members.filter(isPaying).reduce((sum, m) => sum + (PLAN_PRICES_COP[m.plan] ?? 0), 0);
 
+// ---------- Sidebar móvil (drawer izquierda) ----------
+function openSidebar() {
+  $('sidebar').classList.add('open');
+  $('sidebarOverlay').classList.add('show');
+  document.body.classList.add('sidebar-locked');
+  const btn = $('menuToggle');
+  btn.textContent = '✕';
+  btn.setAttribute('aria-expanded', 'true');
+}
+
+function closeSidebar() {
+  $('sidebar').classList.remove('open');
+  $('sidebarOverlay').classList.remove('show');
+  document.body.classList.remove('sidebar-locked');
+  const btn = $('menuToggle');
+  if (btn) {
+    btn.textContent = '☰';
+    btn.setAttribute('aria-expanded', 'false');
+  }
+}
+
 // ---------- Router SPA ----------
 function showView(name) {
   if (!VIEWS.includes(name)) return;
@@ -203,6 +224,7 @@ function showView(name) {
   document.querySelectorAll('[data-panel]').forEach((panel) => {
     panel.classList.toggle('active', panel.dataset.panel === name);
   });
+  closeSidebar();
   if (name === 'payments') renderPayments();
   if (name === 'reports') renderReports();
 }
@@ -392,8 +414,15 @@ function bindEvents() {
     if (e.key === 'Escape') {
       closeOverlay($('memberModal'));
       closeOverlay($('viewMemberModal'));
+      closeSidebar();
     }
   });
+
+  $('menuToggle').addEventListener('click', () => {
+    if ($('sidebar').classList.contains('open')) closeSidebar();
+    else openSidebar();
+  });
+  $('sidebarOverlay').addEventListener('click', closeSidebar);
 
   $('memberForm').addEventListener('submit', (e) => {
     e.preventDefault();

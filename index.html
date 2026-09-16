@@ -11,7 +11,7 @@
   <div class="dashboard-container">
     
     <!-- 1. BARRA LATERAL (SIDEBAR) -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="brand">
         <h2 id="brandName">Bogo<span>FITNESS</span></h2>
         <small data-i18n="brand.sub">Panel Admin</small>
@@ -27,12 +27,14 @@
         </ul>
       </nav>
     </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- 2. CONTENIDO PRINCIPAL -->
     <main class="main-content">
       
       <!-- HEADER -->
       <header class="top-header">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú / Open menu" aria-expanded="false" aria-controls="sidebar">☰</button>
         <div class="search-bar">
           <input type="text" id="searchInput" data-i18n-placeholder="search.placeholder" placeholder="Buscar miembro por nombre o ID...">
         </div>
